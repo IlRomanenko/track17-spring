@@ -1,9 +1,11 @@
 package track.lessons.lesson3;
 
-import java.util.NoSuchElementException;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 /**
  *
@@ -79,5 +81,25 @@ public class MyArrayListTest {
         list.remove(0);
 
         Assert.assertTrue(list.size() == 0);
+    }
+
+    @Test
+    public void listStressTest() {
+        final int MAXN = 100 * 1000;
+        List mlist = new MyArrayList();
+        java.util.ArrayList<Integer> testList = new ArrayList<>();
+
+        Random random = new Random(42);
+
+        for (int i = 0; i < MAXN; i++) {
+            mlist.add(i);
+            testList.add(i);
+        }
+
+        while (mlist.size() != 0) {
+            Assert.assertEquals(mlist.size(), testList.size());
+            int position = random.nextInt(mlist.size());
+            Assert.assertEquals(mlist.remove(position), testList.remove(position).intValue());
+        }
     }
 }

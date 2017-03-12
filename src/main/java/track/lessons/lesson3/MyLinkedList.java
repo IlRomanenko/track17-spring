@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Должен наследовать List
- * Односвязный список
+ * Двусвязный список
  */
 public class MyLinkedList extends List {
 
@@ -26,22 +26,68 @@ public class MyLinkedList extends List {
         }
     }
 
-    @Override
-    void add(int item) {
+    private Node head = null;
+    private Node tail = null;
+
+    public MyLinkedList() {
+    }
+
+    private Node getNode(int idx) {
+        Node current;
+        if (idx < currentSize / 2) {
+            current = head;
+            while (idx > 0) {
+                current = current.next;
+                idx -= 1;
+            }
+        } else {
+            idx = currentSize - idx - 1;
+            current = tail;
+            while (idx > 0) {
+                current = current.prev;
+                idx -= 1;
+            }
+        }
+        return current;
     }
 
     @Override
-    int remove(int idx) throws NoSuchElementException {
-        return 0;
+    public void add(int item) {
+        currentSize += 1;
+        if (head == null) {
+            head = new Node(null, null, item);
+            tail = head;
+        } else {
+            Node newTail = new Node(tail, null, item);
+            tail.next = newTail;
+            tail = newTail;
+        }
     }
 
     @Override
-    int get(int idx) throws NoSuchElementException {
-        return 0;
+    public int remove(int idx) throws NoSuchElementException {
+        checkIdx(idx);
+        Node idxNode = getNode(idx);
+        if (idxNode.prev != null) {
+            idxNode.prev.next = idxNode.next;
+        }
+        if (idxNode.next != null) {
+            idxNode.next.prev = idxNode.prev;
+        }
+        if (idx == 0) {
+            head = head.next;
+        }
+        if (idx == currentSize - 1) {
+            tail = tail.prev;
+        }
+        currentSize -= 1;
+        return idxNode.val;
     }
 
     @Override
-    int size() {
-        return 0;
+    public int get(int idx) throws NoSuchElementException {
+        checkIdx(idx);
+        return getNode(idx).val;
     }
+
 }
