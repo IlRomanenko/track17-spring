@@ -72,7 +72,7 @@ public class CountWords {
         String line;
         while ((line = reader.readLine()) != null) {
             try {
-                Long currentNumber = Long.parseLong(line);
+                Long.parseLong(line);
 
             } catch (NumberFormatException ex) {
                 if (!line.equals("")) {
