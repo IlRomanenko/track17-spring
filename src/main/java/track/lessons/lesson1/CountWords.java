@@ -1,7 +1,9 @@
 package track.lessons.lesson1;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.nio.file.Files;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
 /**
  * Задание 1: Реализовать два метода
@@ -32,18 +34,24 @@ public class CountWords {
      * @return - целое число - сумма всех чисел из файла
      */
     public long countNumbers(File file) throws Exception {
-        final long[] result = {0};
+        Long result = 0L;
 
-        Files.readAllLines(file.toPath()).forEach((String line) -> {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+
+        String line;
+        while ((line = reader.readLine()) != null) {
             try {
                 Long currentNumber = Long.parseLong(line);
-                result[0] += currentNumber;
+                result += currentNumber;
+
             } catch (NumberFormatException ex) {
                 // ignored
             }
-        });
+        }
 
-        return result[0];
+        reader.close();
+
+        return result;
     }
 
 
@@ -57,24 +65,26 @@ public class CountWords {
     public String concatWords(File file) throws Exception {
 
         StringBuilder stringBuilder = new StringBuilder();
+        boolean firstWord = true;
 
-        final boolean[] firstWord = {true};
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 
-        Files.readAllLines(file.toPath()).forEach((String line) -> {
+        String line;
+        while ((line = reader.readLine()) != null) {
             try {
                 Long currentNumber = Long.parseLong(line);
 
             } catch (NumberFormatException ex) {
                 if (!line.equals("")) {
-                    if (!firstWord[0]) {
+                    if (!firstWord) {
                         stringBuilder.append(" ");
                     }
                     stringBuilder.append(line);
-                    firstWord[0] = false;
+                    firstWord = false;
                 }
             }
-        });
-
+        }
+        reader.close();
         return stringBuilder.toString();
     }
 
