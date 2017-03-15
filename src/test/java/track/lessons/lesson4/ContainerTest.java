@@ -8,12 +8,14 @@ import track.container.beans.Car;
 import track.container.beans.Engine;
 import track.container.beans.Gear;
 import track.container.config.ConfigReader;
+import track.container.config.InvalidConfigurationException;
 
 import java.io.File;
 
 public class ContainerTest {
 
     private static final String DEFAULT_PATH = "src/main/resources/config.json";
+    private static final String DEFAULT_FAIL_PATH = "src/main/resources/config_fail.json";
     private static final String ENGINE_BEAN = "engineBean";
     private static final String GEAR_BEAN = "gearBean";
     private static final String CAR_BEAN = "carBean";
@@ -28,7 +30,7 @@ public class ContainerTest {
             callback.callback();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.assertFalse(false);
+            Assert.assertFalse(true);
         }
     }
 
@@ -36,6 +38,12 @@ public class ContainerTest {
     public void readJson() {
         ConfigReader reader = new JsonConfigReader();
         assertNotException(() -> reader.parseBeans(new File(DEFAULT_PATH)));
+    }
+
+    @Test
+    public void readJsonFail() throws InvalidConfigurationException{
+        ConfigReader reader = new JsonConfigReader();
+        reader.parseBeans(new File(DEFAULT_FAIL_PATH));
     }
 
 

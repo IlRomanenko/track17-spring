@@ -22,12 +22,12 @@ public class Container {
     private Map<String, Object> instanceObjects = new HashMap<>();
     private Map<String, String> classNameToId = new HashMap<>();
 
-    private void createObjects(List<Bean> beans) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    private void createObjects(List<Bean> beans)
+            throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         for (Bean bean : beans) {
             classNameToId.put(bean.getClassName(), bean.getId());
             instanceObjects.put(bean.getId(), Class.forName(bean.getClassName()).newInstance());
         }
-
     }
 
     private void parseBeans(List<Bean> beans) throws ClassNotFoundException, IllegalAccessException,
@@ -60,8 +60,6 @@ public class Container {
                     setMethod.invoke(currentObject, getByClass(curField.getType().getTypeName()));
                 }
             }
-
-
         }
     }
 
