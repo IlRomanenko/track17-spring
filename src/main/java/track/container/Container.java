@@ -18,7 +18,6 @@ import java.util.Map;
  */
 public class Container {
 
-
     private Map<String, Object> instanceObjects = new HashMap<>();
     private Map<String, String> classNameToId = new HashMap<>();
 
