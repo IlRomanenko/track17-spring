@@ -1,14 +1,18 @@
 package track.lections;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.SelectorProvider;
+import java.util.Iterator;
 
-public class TcpEchoServer {
+class TCPEchoServer {
     private static final int BUFSIZE = 32;
+
 
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
@@ -17,25 +21,43 @@ public class TcpEchoServer {
 
         int servPort = Integer.parseInt(args[0]);
 
-        ServerSocket serverSocket = new ServerSocket(servPort);
+        Selector selector = SelectorProvider.provider().openSelector();
 
-        int recvMsgSize;
-        byte[] recieveBuf = new byte[BUFSIZE];
+        ServerSocketChannel serverChannel = ServerSocketChannel.open();
+        serverChannel.configureBlocking(false);
 
-        while (true) {
-            Socket clntSock = serverSocket.accept();
+        serverChannel.socket().bind(new InetSocketAddress("localhost", servPort));
 
-            SocketAddress clientAddress = clntSock.getRemoteSocketAddress();
-            System.out.println("Handling client at " + clientAddress);
+        serverChannel.register(selector, serverChannel.validOps());
 
-            InputStream in = clntSock.getInputStream();
-            OutputStream out = clntSock.getOutputStream();
 
-            while ((recvMsgSize = in.read(recieveBuf)) != -1) {
-                out.write(recieveBuf, 0, recvMsgSize);
+        ByteBuffer recvBuffer = ByteBuffer.allocate(BUFSIZE);
+
+        while (selector.select() > 0) {
+
+
+            Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
+
+            while (iterator.hasNext()) {
+                SelectionKey key = iterator.next();
+                SocketChannel clientChannel;
+
+                if (key.isAcceptable()) {
+                    ServerSocketChannel clientServerChannel = (ServerSocketChannel) key.channel();
+                    clientChannel = clientServerChannel.accept();
+
+                    clientChannel.configureBlocking(false);
+                    clientChannel.register(selector, clientChannel.validOps());
+
+                } else if (key.isReadable()) {
+                    clientChannel = (SocketChannel)key.channel();
+                    clientChannel.read(recvBuffer);
+                    recvBuffer.flip();
+                    clientChannel.write(recvBuffer);
+                    clientChannel.close();
+                }
+                iterator.remove();
             }
-
-            clntSock.close();
         }
     }
 }

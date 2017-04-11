@@ -1,0 +1,22 @@
+package track.messenger.net;
+
+import track.messenger.messages.Message;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+/**
+ *
+ */
+public interface Protocol {
+
+    default Message decode(byte[] bytes) throws ProtocolException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        return decode(bais);
+    }
+
+    Message decode(InputStream stream) throws ProtocolException;
+
+    byte[] encode(Message msg) throws ProtocolException;
+
+}

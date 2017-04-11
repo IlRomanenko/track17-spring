@@ -39,10 +39,10 @@ public class SimpleThread {
         t1.start();
 
         for (int i = 0; i < 5; i++) {
-            System.out.println("Main:" + i);
+            System.out.println("MessageServerMain:" + i);
             mysleep(1);
         }
-        System.out.println("Main thread finished");
+        System.out.println("MessageServerMain thread finished");
     }
 
 
@@ -60,7 +60,7 @@ public class SimpleThread {
         thread.start();
         System.out.println("Joining");
         thread.join();
-        System.out.println("Main exit");
+        System.out.println("MessageServerMain exit");
 
 
     }
