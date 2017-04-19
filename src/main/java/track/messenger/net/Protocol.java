@@ -17,6 +17,15 @@ public interface Protocol {
 
     Message decode(InputStream stream) throws ProtocolException;
 
-    byte[] encode(Message msg) throws ProtocolException;
+    Integer decodeInteger(InputStream stream);
 
+    Integer decodeInteger(byte[] array);
+
+    byte[] encode(Message msg);
+
+    byte[] encode(Integer integer);
+
+    byte[] serialize(Message msg);
+
+    Message deserialize(InputStream in) throws ProtocolException;
 }

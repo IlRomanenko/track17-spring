@@ -29,10 +29,10 @@ public class SpringContainerExample {
 //
 //        log.info("Server isRunning:" + server.isRunning());
 //
-//        SocketServer server2 = (SocketServer)context.getBean("socketServer");
-//        log.info("Server isRunning:" + server2.isRunning());
+//        SocketServer server = (SocketServer)context.getBean("socketServer");
+//        log.info("Server isRunning:" + server.isRunning());
 //
-//        server2.destroy();
+//        server.destroy();
 //        log.info("Server isRunning:" + server.isRunning());
 
 

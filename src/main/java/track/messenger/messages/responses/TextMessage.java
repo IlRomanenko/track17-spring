@@ -1,23 +1,31 @@
-package track.messenger.messages;
+package track.messenger.messages.responses;
+
+import track.messenger.messages.BaseTextMessage;
+import track.messenger.messages.Type;
 
 import java.util.Objects;
 
 /**
  * Простое текстовое сообщение
  */
-public class TextMessage extends Message {
-    private String text;
+public class TextMessage extends BaseTextMessage{
 
-    public TextMessage(Long senderId) {
-        super(senderId, Type.MSG_TEXT);
+    private long id;
+    private long chatId;
+
+    public TextMessage(long id, Long senderId, Long chatId, String text) {
+        super(senderId, text);
+        setType(Type.MSG_SEND_TEXT);
+        this.id = id;
+        this.chatId = chatId;
     }
 
-    public String getText() {
-        return text;
+    public long getId() {
+        return id;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public long getChatId() {
+        return chatId;
     }
 
     @Override

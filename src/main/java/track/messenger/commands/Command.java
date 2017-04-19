@@ -12,4 +12,5 @@ import track.messenger.net.Session;
 public interface Command {
 
     void execute(Session session, Message message);
+
 }

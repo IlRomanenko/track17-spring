@@ -1,13 +1,15 @@
 package track.messenger.store;
 
-import track.messenger.User;
+import track.messenger.models.User;
+
+import java.util.List;
 
 public interface UserStore {
     /**
      * Добавить пользователя в хранилище
      * Вернуть его же
      */
-    User addUser(User user);
+    User addUser(String login, String password);
 
     /**
      * Обновить информацию о пользователе
@@ -27,4 +29,6 @@ public interface UserStore {
      * return null if user not found
      */
     User getUserById(Long id);
+
+    List<User> getUsers();
 }

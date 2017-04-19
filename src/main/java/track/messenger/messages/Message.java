@@ -7,24 +7,12 @@ import java.io.Serializable;
  */
 public abstract class Message implements Serializable {
 
-    private static volatile long ID_COUNTER = 0;
-
-    private Long id;
     private Long senderId;
     private Type type;
 
     public Message(Long senderId, Type type) {
-        id = ID_COUNTER++;
         this.senderId = senderId;
         this.type = type;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getSenderId() {
@@ -41,5 +29,10 @@ public abstract class Message implements Serializable {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Message{sender: %d type: %s}", senderId, type.toString());
     }
 }
